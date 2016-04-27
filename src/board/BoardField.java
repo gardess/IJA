@@ -5,6 +5,7 @@ public class BoardField implements Field {
     private int row, col;
     private Field nextFields[];
     private Disk disk;
+    
     public BoardField(int row, int col) {
         this.row = row;
         this.col = col;
@@ -12,15 +13,28 @@ public class BoardField implements Field {
         disk = null;
     }
     
+    public BoardField(BoardField field) {
+        this.row = field.row;
+        this.col = field.col;
+        this.nextFields = new Field[8];
+        if (field.isEmpty())
+            disk = null;
+        else
+            disk = new Disk(field.getDisk());
+    }
+    
+    @Override
     public void addNextField(Direction dirs, Field field) {
         this.nextFields[dirs.ordinal()] = field;
     }
     
+    @Override
     public Field nextField(Field.Direction dirs) {
         return this.nextFields[dirs.ordinal()];
     }
     
-    public boolean forceDisk(Disk disk) {
+    @Override
+    public boolean putDisk(Disk disk) {
         if (this.disk == null) {
             this.disk = disk;
             return true;
@@ -29,33 +43,41 @@ public class BoardField implements Field {
             return false;
     }
     
+    @Override
     public boolean isEmpty(){
         return this.disk == null;
     }
     
+    @Override
     public Disk getDisk() {
         return this.disk;
     }
     
-    public boolean canPutDisk(Disk disk) {
+    @Override
+    public boolean canPlayDisk(Disk disk) {
         if (this.disk != null)
             return false;
-        boolean valid = false;
+        
         Disk oponentDisk = new Disk(!disk.isWhite());
         for (Direction dir: Direction.values()) {
-            Field field = this;
+            Field currentField = this;
             boolean oponentBetween = false;
-            do {
-                field = field.nextField(dir);
-                if (oponentDisk.equals(field.getDisk()))
+            currentField = currentField.nextField(dir);
+            while (!currentField.isEmpty()) {
+                if (oponentDisk.equals(currentField.getDisk()))
                     oponentBetween = true;
-                else if (disk.equals(field.getDisk()) && oponentBetween)
-                    return true;
-            } while (field.getDisk() != null);
+                else
+                    if (oponentBetween)
+                        return true; // kamen stejne barvy, v tomto smeru se muzou otacet
+                    else
+                        break; // nalezen kamen vlastni barvy, ale zadne souperovy
+                currentField = currentField.nextField(dir);
+            }
         }
         return false;
     }
     
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof BoardField))
             return false;
@@ -63,31 +85,48 @@ public class BoardField implements Field {
         return (this.row == f.row && this.col == f.col);
     }
     
-    public boolean putDisk(Disk disk) {
-        if (this.canPutDisk(disk)) {
-            this.disk = disk;
-            Disk oponentDisk = new Disk(!disk.isWhite());
-            for (Direction dir: Direction.values()) {
-                Field field = this;
-                boolean oponentBetween = false;
-                do {  //check if direction will be turned
-                    field = field.nextField(dir);
-                    if (oponentDisk.equals(field.getDisk()))
-                        oponentBetween = true;
-                    else if (disk.equals(field.getDisk()) && oponentBetween) {
-                        field = this;
-                        field = field.nextField(dir);
-                        while (!field.getDisk().equals(disk)) { // turn all disks in direction
-                            field.getDisk().turn();
-                            field = field.nextField(dir);
-                        }
-                    }
-                } while (field.getDisk() != null);
-            }
-
-            return true;
-        }
-        else
+    @Override
+    public boolean playDisk(Disk disk) {
+        if (!this.canPlayDisk(disk))
             return false;
+        
+        this.disk = disk;
+        Disk oponentDisk = new Disk(!disk.isWhite());
+        for (Direction dir: Direction.values()) {
+            Field field = this;
+            boolean oponentBetween = false;
+            while (!field.isEmpty()) {
+                if (oponentDisk.equals(field.getDisk()))
+                    oponentBetween = true;
+                else if (disk.equals(field.getDisk()) && oponentBetween) {
+                    field = this;
+                    field = field.nextField(dir);
+                    while (!field.getDisk().equals(disk)) { // turn all disks in direction
+                        field.getDisk().turn();
+                        field = field.nextField(dir);
+                    }
+                    break;
+                }
+                field = field.nextField(dir);
+            }
+        }
+
+        return true;
     }
+    
+    /**
+     * Vrátí řádek políčka
+     * @return řádek políčka
+     */
+    public int getRow(){
+        return this.row;
+    }
+    
+    /**
+     * Vrátí sloupec políčka
+     * @return sloupec políčka
+     */
+    public int getCol(){
+        return this.col;
+    }       
 }
