@@ -107,7 +107,7 @@ public class Game {
     /**
      * Aktuální hráč zahraje kámen na políčko dané souřadnicemi.
      * Lze vrátit operací undo.
-     * @param row Řádek
+     * @param row Rádek
      * @param col Sloupec.
      * @return Úspěšnost akce.
      */

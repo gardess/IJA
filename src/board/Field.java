@@ -52,7 +52,7 @@ public interface Field {
     public void addNextField(Direction dirs, Field field);
     
     /**
-    * Test, zda je možné na pole vložit kámen. Řídí se pravidly hry.
+    * Test, zda je možné na pole vložit kámen. Rídí se pravidly hry.
     * @param disk Vkládaný kámen
     * @return Zda je možné zahrát kámen.
     */

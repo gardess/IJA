@@ -28,10 +28,10 @@ public class Nacitaniobrazku {
      */
     public Nacitaniobrazku() throws IOException
     {
-        Nacitaniobrazku.volnePole = ImageIO.read(new File("C:\\Java\\ija2015\\src\\lib\\img\\pole1.png"));
-        Nacitaniobrazku.bilyKamen = ImageIO.read(new File("C:\\Java\\guitest\\src\\guitest\\bilyKamen.png"));
-        Nacitaniobrazku.cernyKamen = ImageIO.read(new File("C:\\Java\\guitest\\src\\guitest\\cernyKamen.png"));
-        Nacitaniobrazku.zamrzlyKamen = ImageIO.read(new File("C:\\Java\\guitest\\src\\guitest\\zamrznutyKamen.png"));
+        Nacitaniobrazku.volnePole = ImageIO.read(new File("lib/img/pole1.png"));
+        Nacitaniobrazku.bilyKamen = ImageIO.read(new File("lib/img/bilyKamen.png"));
+        Nacitaniobrazku.cernyKamen = ImageIO.read(new File("lib/img/cernyKamen.png"));
+        Nacitaniobrazku.zamrzlyKamen = ImageIO.read(new File("lib/img/zamrznutyKamen.png"));
     }
     
 }

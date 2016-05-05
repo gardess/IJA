@@ -130,7 +130,7 @@ public class Hraciplocha {
         SpinnerModel sm2 = new SpinnerNumberModel(1,1,pocetRadku,1);
         
 // vlozeni kamene
-        radekS = new JLabel("Řádek");
+        radekS = new JLabel("Rádek");
         radekS.setBounds((60*pocetRadku)+150, 100, 90, 30);
         okno.getContentPane().add(radekS);
         sloupecS = new JLabel("Sloupec");

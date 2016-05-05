@@ -1,15 +1,37 @@
 <?xml version='1.0' encoding='utf8'?>
 <project name="reverzi" default="compile" basedir=".">
-	<target name="clean">
-		<delete dir="build"/>
-	</target>
-	<target name="compile" depends="clean">
-		<mkdir dir="build"/>
-		<javac srcdir="src" destdir="build" classpath="lib/junit-4.12.jar:lib/hamcrest-core-1.3.jar:src" includeantruntime="false"/>
-	</target>
-	<target name="run">
-		<java classname="org.junit.runner.JUnitCore" classpath="build:lib/junit-4.12.jar:lib/hamcrest-core-1.3.jar" fork="true">
-			<arg value="test.Homework2Test"/>
-		</java>
-	</target>
+
+    <target name="clean">
+        <delete includeemptydirs="true">
+			<fileset dir="build" includes="**/*"/>
+		</delete>
+        <delete includeemptydirs="true">
+			<fileset dir="dest-client" includes="**/*"/>
+		</delete>
+        <delete includeemptydirs="true">
+			<fileset dir="doc" includes="**/*"/>
+		</delete>
+    </target>
+
+    <target name="compile">
+        <javac srcdir="src" destdir="build"/>
+        <jar destfile="dest-client/othello-client.jar" basedir="build">
+            <manifest>
+                <attribute name="Main-Class" value="GUI.Mainmenu"/>
+            </manifest>
+            <fileset dir="lib">
+                <include name="resources/**" />
+           </fileset>
+        </jar>
+        <javadoc packagenames="ija" sourcepath="src" destdir="doc">
+            <fileset dir="src">
+                <include name="**" />
+           </fileset>
+        </javadoc>
+    </target>
+
+    <target name="run">
+        <java jar="dest-client/othello-client.jar" fork="true"/>
+    </target>
+
 </project>

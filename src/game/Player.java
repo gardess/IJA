@@ -56,7 +56,7 @@ public class Player {
     }
     
     /**
-     * Vloží nový kámen hráče na dané políčko, pokud to pravidla hry umožňují.
+     * Vloží nový kámen hráče na dané políčko, pokud to pravidla hry umožnují.
      * Pokud lze vložit, vybere kámen ze sady hráče a vloží na políčko.
      * @param field Políčko, na které se vkládá kámen.
      * @return Úspěch akce.

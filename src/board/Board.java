@@ -73,7 +73,7 @@ public class Board implements Iterable<Field> {
     
     /**
      * Vrátí políčko na uvedených souřadnicích.
-     * @param row Řádek.
+     * @param row Rádek.
      * @param col Sloupec.
      * @return Políčko na daných souřadnicích
      */
