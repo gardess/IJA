@@ -31,10 +31,10 @@ public class Board implements Iterable<Field> {
         
         connectFields();
         
-        this.fields[size/2][size/2].putDisk(new Disk(true));
+        /*this.fields[size/2][size/2].putDisk(new Disk(true));
         this.fields[size/2+1][size/2+1].putDisk(new Disk(true));
         this.fields[size/2][size/2+1].putDisk(new Disk(false));
-        this.fields[size/2+1][size/2].putDisk(new Disk(false));
+        this.fields[size/2+1][size/2].putDisk(new Disk(false));*/
                 
     }
     

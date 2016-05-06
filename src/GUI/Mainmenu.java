@@ -9,10 +9,16 @@ package GUI;
  *
  * @author milan
  */
+import Loadsave.Load;
+import game.Game;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *  Hlavni menu
@@ -53,9 +59,29 @@ public class Mainmenu extends JFrame
         
         nacistHru = new JButton("Načíst hru");
         nacistHru.setBounds(470, 370, 260, 90);
-        nacistHru.addActionListener((ActionEvent e) -> {
-            okno.dispose();
-            //nacteni hry
+        nacistHru.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                if (fileChooser.showOpenDialog(Mainmenu.this) == JFileChooser.APPROVE_OPTION) {
+                    File soubor = fileChooser.getSelectedFile();
+                    System.out.print(soubor);
+                    Load nacist;
+                    try {
+                        nacist = new Load(soubor);
+                        //Game hra = nacist.nacti(soubor);
+                        Game hra = nacist.nacti(soubor);
+                        okno.dispose();
+                        new Hraciplocha(hra,nacist.getNaTahu());
+                        
+                    } catch (IOException ex) {
+                        Logger.getLogger(Mainmenu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
+                }
+                
+            }
         });
         okno.getContentPane().add(nacistHru);
         

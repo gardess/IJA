@@ -7,6 +7,7 @@ package GUI;
 
 import game.*;
 import board.*;
+import Loadsave.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,13 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 /**
  *  Obrazovka samotne hry
@@ -77,6 +83,29 @@ public class Hraciplocha {
         hra.addPlayer(new Player(true));
         hra.addPlayer(new Player(false));
         deska = hra.getBoard();
+        
+        hra.getBoard().getField(pocetRadku/2, pocetRadku/2).putDisk(new Disk(true));
+        hra.getBoard().getField((pocetRadku/2) + 1, (pocetRadku/2) + 1).putDisk(new Disk(true));
+        hra.getBoard().getField((pocetRadku/2) + 1, pocetRadku/2).putDisk(new Disk(false));
+        hra.getBoard().getField(pocetRadku/2, (pocetRadku/2) + 1).putDisk(new Disk(false));
+        
+        vytvorGui();
+    }
+    
+    public Hraciplocha(Game game, int tah) throws IOException
+    {
+        this.hra = game;
+        this.deska = hra.getBoard();
+        hra.addPlayer(new Player(true));
+        hra.addPlayer(new Player(false));
+        
+        this.pocetRadku = this.deska.getSize();
+        this.pocetKamenu = (this.pocetRadku * this.pocetRadku);
+        this.polickaGui = new JPanel[pocetRadku+2][pocetRadku+2];
+        if(tah == 1)
+        {
+            game.nextPlayer();
+        }
         vytvorGui();
     }
     
@@ -146,12 +175,10 @@ public class Hraciplocha {
         vloz = new JButton("Vlož kámen");
         vloz.setBounds((60*pocetRadku)+350, 105, 100, 20);
         vloz.addActionListener((ActionEvent e) -> {
-            //okno.dispose();
-            //nacteni hry
             vlozRadek = ((Integer) radek.getValue());
             vlozSloupec = ((Integer) sloupec.getValue());
             
-            //System.out.println("vlozil jsem kamen na: " + vlozRadek + vlozSloupec);
+            //System.out.println(deska);
             hra.play(vlozRadek,vlozSloupec);
             updateBoard();
         });
@@ -160,8 +187,25 @@ public class Hraciplocha {
         uloz = new JButton("Ulož hru");
         uloz.setBounds((60*pocetRadku)+150, 25, 100, 30);
         uloz.addActionListener((ActionEvent e) -> {
-            //okno.dispose();
-            //nacteni hry
+            JFileChooser fileChooser = new JFileChooser();
+            if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+              File soubor = fileChooser.getSelectedFile();
+              System.out.print(soubor);
+              Save ulozit;
+                try {
+                    ulozit = new Save(hra, soubor);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Hraciplocha.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(Hraciplocha.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                /*try {
+                    ulozenie.uloz(subor);
+                } catch (FileNotFoundException | UnsupportedEncodingException ex) {
+                    Logger.getLogger(HlavneGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }*/
+            }
+//new Save(pocetRadku, "temp.save", deska);
         });
         okno.getContentPane().add(uloz);
         
@@ -169,6 +213,7 @@ public class Hraciplocha {
         konec.setBounds((60*pocetRadku)+300, 25, 100, 30);
         konec.addActionListener((ActionEvent e) -> {
             okno.dispose();
+            System.exit(0);
         });
         okno.getContentPane().add(konec);
         
@@ -324,5 +369,10 @@ public class Hraciplocha {
             okno.repaint();
             okno.revalidate();
         }
+    }
+    
+    public int radkuPocet()
+    {
+        return this.pocetRadku;
     }
 }
