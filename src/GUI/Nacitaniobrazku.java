@@ -12,7 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- *  Nacteni obrazku pro rychlejsi beh
+ *  Načtení obrazků pro rychlejší běh programu
  * @author Milan Gardáš (xgarda04)
  */
 public class Nacitaniobrazku {
@@ -23,8 +23,8 @@ public class Nacitaniobrazku {
     public static BufferedImage zamrzlyKamen;
     
     /**
-     * Metoda, ktora nacita obrazky a uklada ich do pola pre rychlejsiu pracu s GUI
-     * @throws IOException vynimka ak sa nenajdu obrazky
+     * Metoda, která načte obrázky
+     * @throws IOException vyjímka při nenalezení obrázku
      */
     public Nacitaniobrazku() throws IOException
     {

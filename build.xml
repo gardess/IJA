@@ -14,7 +14,7 @@
     </target>
 
     <target name="compile">
-        <javac srcdir="src" destdir="build"/>
+        <javac encoding="UTF-8" srcdir="src" destdir="build"/>
         <jar destfile="dest-client/othello-client.jar" basedir="build">
             <manifest>
                 <attribute name="Main-Class" value="GUI.Mainmenu"/>

@@ -72,30 +72,103 @@ public class Hraciplocha {
     private Game hra;
     private Field pole;
     
+    private int protihrac;
+    private int barvaHrace;
     
-    public Hraciplocha(int velikostDesky) throws IOException
+    private int zamrzani;
+    private int I;
+    private int B;
+    private int C;
+    
+    public Hraciplocha(int velikostDesky, int protihrac, int barva, int zamrzani, int IParam, int BParam, int CParam) throws IOException
     {
         //polickaGui.setLayout(null);
         this.pocetRadku = velikostDesky;
         this.pocetKamenu = (this.pocetRadku * this.pocetRadku);
         this.polickaGui = new JPanel[pocetRadku+2][pocetRadku+2];
+        if(zamrzani == 1)
+        {
+            hra = new Game(pocetRadku, new Freezer(IParam,BParam,CParam));
+        }
+        else if(zamrzani == 0)
+        {
+            hra = new Game(pocetRadku);
+        }
+        this.protihrac = protihrac;
+        this.barvaHrace = barva;
         
-        hra = new Game(pocetRadku);
-        hra.addPlayer(new Player(false, new Human()));
-        hra.addPlayer(new Player(true, new Human()));
+        if(barva == 0)
+        {
+            hra.addPlayer(new Player(false, new Human()));
+            
+            if(protihrac == 0)
+            {
+                hra.addPlayer(new Player(true, new Human()));
+            }
+            else if(protihrac == 1)
+            {
+                hra.addPlayer(new Player(true, new ComputerRandom()));
+            }
+            else if(protihrac == 2) // druha umela inteligence
+            { 
+                hra.addPlayer(new Player(true, new ComputerMinMax()));
+            }
+        }
+        else if(barva == 1)
+        {
+            hra.addPlayer(new Player(true, new Human()));
+            if(protihrac == 0)
+            {
+                hra.addPlayer(new Player(false, new Human()));
+            }
+            else if(protihrac == 1)
+            {
+                hra.addPlayer(new Player(false, new ComputerRandom()));
+            }
+            else if(protihrac == 2) // druha umela inteligence
+            { 
+                hra.addPlayer(new Player(false, new ComputerMinMax()));
+            }
+        }
         deska = hra.getBoard();
+        
         
         hra.start();
         
         vytvorGui();
     }
     
-    public Hraciplocha(Game game, int tah) throws IOException
+    // konstruktor pro nacteni hry
+    public Hraciplocha(Game game, int tah, int cernyHrac, int bilyHrac, int zamrzani, int IParam, int BParam, int CParam) throws IOException
     {
         this.hra = game;
         this.deska = hra.getBoard();
-        hra.addPlayer(new Player(false, new Human()));
-        hra.addPlayer(new Player(true, new Human()));
+        if(cernyHrac == 0)
+        {
+            hra.addPlayer(new Player(false, new Human()));
+        }
+        else if(cernyHrac == 1)
+        {
+            hra.addPlayer(new Player(false, new ComputerRandom()));
+        }
+        else if(cernyHrac == 2)
+        {
+            hra.addPlayer(new Player(false, new ComputerMinMax()));
+        }
+        
+        if(bilyHrac == 0)
+        {
+            hra.addPlayer(new Player(true, new Human()));
+        }
+        else if(bilyHrac == 1)
+        {
+            hra.addPlayer(new Player(true, new ComputerRandom()));
+        }
+        else if(bilyHrac == 2)
+        {
+            hra.addPlayer(new Player(true, new ComputerMinMax()));
+        }
+        
         
         this.pocetRadku = this.deska.getSize();
         this.pocetKamenu = (this.pocetRadku * this.pocetRadku);
@@ -179,6 +252,13 @@ public class Hraciplocha {
             //System.out.println(deska);
             hra.play(vlozRadek,vlozSloupec);
             updateBoard();
+            
+            // vlozeni kamene pocitacem
+            /*if(hra.currentPlayer().getControl().isAI() == true)
+            {
+                
+            }*/
+            
         });
         okno.getContentPane().add(vloz);
         
@@ -191,7 +271,7 @@ public class Hraciplocha {
               System.out.print(soubor);
               Save ulozit;
                 try {
-                    ulozit = new Save(hra, soubor);
+                    ulozit = new Save(hra, soubor, protihrac, barvaHrace, zamrzani, I, B, C);
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(Hraciplocha.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (UnsupportedEncodingException ex) {
@@ -211,7 +291,7 @@ public class Hraciplocha {
         konec.setBounds((60*pocetRadku)+300, 25, 100, 30);
         konec.addActionListener((ActionEvent e) -> {
             okno.dispose();
-            System.exit(0);
+            //System.exit(0);
         });
         okno.getContentPane().add(konec);
         
@@ -259,19 +339,41 @@ public class Hraciplocha {
                 }
                 else if(pole.getDisk().isWhite() == true)
                 {
-                    picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
-                    polickaGui[i][j] = new JPanel();
-                    polickaGui[i][j].add(picLabel);
-                    panel.add(polickaGui[i][j]);
-                    bilySkore++;
+                    if(pole.getDisk().isFrozen() == true)
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        bilySkore++;
+                    }
+                    else
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        bilySkore++;
+                    }
                 }
                 else
                 {
-                    picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
-                    polickaGui[i][j] = new JPanel();
-                    polickaGui[i][j].add(picLabel);
-                    panel.add(polickaGui[i][j]);
-                    cernySkore++;
+                    if(pole.getDisk().isFrozen() == true)
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        bilySkore++;
+                    }
+                    else
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        cernySkore++;
+                    }
                 }
                 
             }
@@ -299,19 +401,41 @@ public class Hraciplocha {
                 }
                 else if(pole.getDisk().isWhite() == true)
                 {
-                    picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
-                    polickaGui[i][j] = new JPanel();
-                    polickaGui[i][j].add(picLabel);
-                    panel.add(polickaGui[i][j]);
-                    bilySkore++;
+                    if(pole.getDisk().isFrozen() == true)
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        bilySkore++;
+                    }
+                    else
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        bilySkore++;
+                    }
                 }
                 else
                 {
-                    picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
-                    polickaGui[i][j] = new JPanel();
-                    polickaGui[i][j].add(picLabel);
-                    panel.add(polickaGui[i][j]);
-                    cernySkore++;
+                    if(pole.getDisk().isFrozen() == true)
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        bilySkore++;
+                    }
+                    else
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        cernySkore++;
+                    }
                 }
                 
             }

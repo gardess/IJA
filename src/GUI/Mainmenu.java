@@ -69,10 +69,10 @@ public class Mainmenu extends JFrame
                     Load nacist;
                     try {
                         nacist = new Load(soubor);
-                        //Game hra = nacist.nacti(soubor);
+                        
                         Game hra = nacist.nacti(soubor);
-                        okno.dispose();
-                        new Hraciplocha(hra,nacist.getNaTahu());
+                        //okno.dispose();
+                        new Hraciplocha(hra, nacist.getNaTahu(), nacist.getCernyHrac(), nacist.getBilyHrac(), nacist.getZamrzani(), nacist.getI(), nacist.getB(), nacist.getC());
                         
                     } catch (IOException ex) {
                         Logger.getLogger(Mainmenu.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +89,7 @@ public class Mainmenu extends JFrame
         konec.setBounds(470, 530, 260, 90);
         konec.addActionListener((ActionEvent e) -> {
             okno.dispose();
-            //nacteni hry
+            System.exit(0);
         });
         okno.getContentPane().add(konec);
     }

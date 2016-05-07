@@ -25,13 +25,21 @@ public class Save {
     Board deska;
     Field pole;
     String naTahu;
+    private int protihrac;
+    private int barva;
+    private int zamrzani;
+    private int I;
+    private int B;
+    private int C;
     
-    public Save(Game game, File file) throws FileNotFoundException, UnsupportedEncodingException
+    public Save(Game game, File file, int protihrac, int barva, int zamrzani, int IParam, int BParam, int CParam) throws FileNotFoundException, UnsupportedEncodingException
     {
         this.pocetRadku = game.getBoard().getSize();
         this.soubor = file;
         this.deska = game.getBoard();
         this.naTahu = game.currentPlayer().toString();
+        this.protihrac = protihrac;
+        this.barva = barva;
         uloz(this.soubor);
         
     }
@@ -43,17 +51,54 @@ public class Save {
             zapis.println(pocetRadku);
             
             // typ cerneho hrace (0 - clovek, 1 - AI1, 2 - AI2)
-            zapis.println(0);
+            if(barva == 0)
+            {
+                zapis.println(0);
+            }
+            else if((barva != 0)&&(protihrac == 0))
+            {
+                zapis.println(0);
+            }
+            else if((barva != 0)&&(protihrac == 1))
+            {
+                zapis.println(1);
+            }
+            else if((barva != 0)&&(protihrac == 2))
+            {
+                zapis.println(2);
+            }
             
             // typ bileho hrace (0 - clovek, 1 - AI1, 2 - AI2)
-            zapis.println(0);
+            if(barva == 1)
+            {
+                zapis.println(0);
+            }
+            else if((barva != 1)&&(protihrac == 0))
+            {
+                zapis.println(0);
+            }
+            else if((barva != 1)&&(protihrac == 1))
+            {
+                zapis.println(1);
+            }
+            else if((barva != 1)&&(protihrac == 2))
+            {
+                zapis.println(2);
+            }
             
             // zamrzani kamenu (0 - ne, 1 - ano)
-            zapis.println(0);
+            if(zamrzani == 0)
+            {
+                zapis.println(0);
+            }
+            else if(zamrzani == 1)
+            {
+                zapis.println(1);
+            }
             // zamrzani kamenu parametry IBC
-            zapis.println(0); // I
-            zapis.println(0); // B
-            zapis.println(0); // C
+            zapis.println(I); // I
+            zapis.println(B); // B
+            zapis.println(C); // C
             
             // hrac na tahu (0 - cerny, 1 - bily)
             if(naTahu == "black")
@@ -77,11 +122,25 @@ public class Save {
                     }
                     else if(pole.getDisk().isWhite() == true)
                     {
-                        zapis.println(1);
+                        if(pole.getDisk().isFrozen() == true)
+                        {
+                            zapis.println(3);
+                        }
+                        else
+                        {
+                            zapis.println(1);
+                        }
                     }
                     else
                     {
-                        zapis.println(2);
+                        if(pole.getDisk().isFrozen() == true)
+                        {
+                            zapis.println(4);
+                        }
+                        else
+                        {
+                            zapis.println(2);
+                        }
                     }
                 }
             }

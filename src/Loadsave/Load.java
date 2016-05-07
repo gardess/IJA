@@ -74,7 +74,14 @@ public class Load {
             naTahu = parseInt(line);
             
             int pole;
-            hra = new Game(pocetRadku);
+            if(zamrzani == 0)
+            {
+                hra = new Game(pocetRadku);
+            }
+            else if(zamrzani == 1)
+            {
+                hra = new Game(pocetRadku, new Freezer(I,B,C));
+            }
             for(int i = 1; i <= pocetRadku; i++)
             {
                 for(int j = 1; j <= pocetRadku; j++)
@@ -89,6 +96,14 @@ public class Load {
                     {
                         hra.getBoard().getField(i, j).putDisk(new Disk(false));
                     }
+                    else if(pole == 3)
+                    {
+                        hra.getBoard().getField(i, j).putDisk(new Disk(true, true));
+                    }
+                    else if(pole == 4)
+                    {
+                        hra.getBoard().getField(i, j).putDisk(new Disk(false, true));
+                    }
                 }
             }
         }
@@ -99,5 +114,33 @@ public class Load {
     {
         return naTahu;
     }
-    
+
+    public int getPocetRadku() {
+        return pocetRadku;
+    }
+
+    public int getCernyHrac() {
+        return cernyHrac;
+    }
+
+    public int getBilyHrac() {
+        return bilyHrac;
+    }
+
+    public int getZamrzani() {
+        return zamrzani;
+    }
+
+    public int getI() {
+        return I;
+    }
+
+    public int getB() {
+        return B;
+    }
+
+    public int getC() {
+        return C;
+    }
+
 }
