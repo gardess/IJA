@@ -19,10 +19,31 @@ public class Player {
      * @param control Objekt pro samostatné rozhodnování hráče.
      */
     public Player(boolean isWhite, PlayerControl control) {
+        this(isWhite, 0, control);
+    }
+    
+    /**
+     * Inicializace hráče včetně zbývajících kamenů
+     * @param isWhite Barva hráče (true bílý, false černý).
+     * @param disksLeft Zbývající kameny v hráčově sadě.
+     * @param control Objekt pro samostatné rozhodnování hráče.
+     */
+    public Player(boolean isWhite, int disksLeft, PlayerControl control) {
         this.isWhite = isWhite;
+        this.diskCount = disksLeft;
         this.control = control;
     }
     
+    /**
+     * Zkopíruje hráče. Zůstává barva, počet kamenů.
+     * @player player Původní hráč.
+     */
+    public Player(Player player){
+        this.isWhite = player.isWhite;
+        this.diskCount = player.diskCount;
+        this.control = null;
+    }
+        
     /**
      * Test, zda je možné vložit nový kámen na dané pole. Kámen se ze sady
      * nevybíra, ani nevkládá na pole.
@@ -101,6 +122,14 @@ public class Player {
      */
     public PlayerControl getControl() {
         return this.control;
+    }
+    
+    /**
+     * Nastaví nový způsob rozhodování hráče.
+     * @param control Objekt implementujicí rozhodování hráče.
+     */
+    public void setControl(PlayerControl control) {
+        this.control = control;
     }
     
     @Override

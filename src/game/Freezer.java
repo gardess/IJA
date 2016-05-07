@@ -24,6 +24,13 @@ public class Freezer {
     private long timeToChange; // cas (v ms), ve ktery se zmeni faze
     
     /**
+     * Vytvoří objekt, který dokáže pouze rozmrazit desku.
+     */
+    public Freezer() {
+        this(0,0,0);
+    }
+    
+    /**
      * Nastavení zamrzávání. Po náhodnou dobu (0 až timeNoFreeze) jsou všechny kameny rozmrzlé.
      * Potom jsou po náhodnou dobu (0 až timeFreeze) kameny zamrzlé.
      * @param timeNoFreeze Maximální čas v sekundách kdy nebudou zamrzlé kameny.

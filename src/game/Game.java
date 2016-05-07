@@ -44,6 +44,22 @@ public class Game {
         this.freezer = freezer;
     }
     
+    /** Zkopíruje hru. Nová hra má stejnou aktualní desku a hráče,
+     * ale nekopíruje se historie tahů a zamrzávání kamenů je vypnuto.
+     * @param game Původní hra.
+     */
+    public Game(Game game) {
+        this.board = new Board(game.board);
+        this.players = new Player[2];
+        this.players[0] = new Player(game.players[0]);
+        this.players[1] = new Player(game.players[1]);
+        this.onTurn = game.onTurn;
+        this.undoStack = new Stack<>();
+        this.redoStack = new Stack<>();
+        this.end = game.end;
+        this.freezer = null;
+    }
+    
     /**
      * Vloží na desku 4 startovní kameny, a pokud začíná AI, nechá ho táhnout.
      */
@@ -177,7 +193,7 @@ public class Game {
      * @return false, pokud na tahu není hráč ovládaný AI.
      */
     public boolean playAI() {
-        if (!this.currentPlayer().getControl().isAI())
+        if (!this.currentPlayer().getControl().isAI() || isEnd())
             return false;
         
         Field field = this.currentPlayer().getControl().getNextMove(this);
@@ -303,4 +319,17 @@ public class Game {
         return false;
     }
     
+    /**
+     * Zjistí skore hráče dané barvy na aktuální desce.
+     * @param isWhite Barva hráče.
+     * @return Skore hráče dané barvy.
+     */
+    public int score(boolean isWhite) {
+        int ret = 0;
+        for (Field field : this.board) {
+            if (!field.isEmpty() && field.getDisk().isWhite() == isWhite)
+                ret++;
+        }
+        return ret;
+    }
 }
