@@ -13,7 +13,7 @@ public class Board implements Iterable<Field> {
     private int size;
     private Field[][] fields;
     /**
-     * Inicializuje desku. Vytvoří a uloží si všechna políčka. Pro každé aktivní
+     * Inicializuje prázdnou desku. Vytvoří a uloží si všechna políčka. Pro každé aktivní
      * políčko nastaví jejich okolí.
      * @param size Velikost hrací desky.
      */
@@ -29,13 +29,14 @@ public class Board implements Iterable<Field> {
                     this.fields[i][j] = new BoardField(i, j);
             }
         
-        connectFields();
-        
-        /*this.fields[size/2][size/2].putDisk(new Disk(true));
+        connectFields();              
+    }
+    
+    public void start() {
+        this.fields[size/2][size/2].putDisk(new Disk(true));
         this.fields[size/2+1][size/2+1].putDisk(new Disk(true));
         this.fields[size/2][size/2+1].putDisk(new Disk(false));
-        this.fields[size/2+1][size/2].putDisk(new Disk(false));*/
-                
+        this.fields[size/2+1][size/2].putDisk(new Disk(false));
     }
     
     /**
@@ -89,11 +90,18 @@ public class Board implements Iterable<Field> {
         return this.size;
     }
     
+    /**
+     * Vratí iterator iterující přes všechna platná políčka.
+     * @return iterator.
+     */
     @Override
     public Iterator<Field> iterator() {
         return new BoardIterator();
     }
     
+    /**
+     * Iteruje přes všechna platná políčka desky.
+     */
     class BoardIterator implements Iterator<Field> {
         private int row, col;
         

@@ -30,34 +30,34 @@ public class UI {
                 Field field = board.getField(i, j);
                 if (field.isEmpty())
                     System.out.print(" ");
-                else if(field.getDisk().isWhite())
-                    System.out.print("o");
-                else
-                    System.out.print("x");
+                else if(field.getDisk().isWhite()) {
+                    if (field.getDisk().isFrozen())
+                        System.out.print("c");
+                    else
+                        System.out.print("o");
+                }
+                else {
+                    if (field.getDisk().isFrozen())
+                        System.out.print("k");
+                    else
+                        System.out.print("x");
+                }
             }
             System.out.println();
         }
     }
             
     public static void main(String [] args) {
-        Game game = new Game(8);
+        Game game = new Game(8, new Freezer(0,0,1)); // 0,0,1 - kazdy tah se zamrzne/rozmrzne 1 kamen
         game.addPlayer(new Player(true));
         game.addPlayer(new Player(false));
-        if (game.undo()) System.exit(1);
+        game.start();
         printGame(game);
         game.play(5,6);
+        printGame(game);
         game.play(6,4);
+        printGame(game);
         game.play(4,3);
         printGame(game);
-        game.play(5,7);
-        game.play(7,4);
-        printGame(game);
-        if (!game.undo()) System.exit(1);
-        game.undo();
-        printGame(game);
-        game.redo();
-        game.redo();
-        printGame(game);
-        if (game.redo()) System.exit(1);
     }
 }

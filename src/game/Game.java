@@ -19,18 +19,36 @@ public class Game {
     private Stack<Board> undoStack;
     private Stack<Board> redoStack;
     private boolean end;
+    private Freezer freezer;
     
     /**
-     * Inicializuje hru s danou velikostí hrací desky.
+     * Vytvoří hru s prázdnou deskou s a danou velikostí
      * @param size Velikost hrací desky.
      */
     public Game(int size) {
-        this.board = new Board(size);
+        this(size, null);
+    }
+    
+    /**
+     * Vytvoří hru s prázdnou deskou s a danou velikostí a nastavením zamrzání.
+     * @param size Velikost hrací desky.
+     * @param freezer nastavení zamrzání.
+     */
+    public Game(int size, Freezer freezer) {
+        board = new Board(size);
         players = new Player[2];
         onTurn = 0;
         undoStack = new Stack<>();
         redoStack = new Stack<>();
         end = false;
+        this.freezer = freezer;
+    }
+    
+    /**
+     * Vloží na desku 4 startovní kameny
+     */
+    public void start() {
+       board.start();
     }
     
     /**
@@ -114,13 +132,35 @@ public class Game {
     public boolean play(int row, int col) {
         if (this.currentPlayer().canPlayDisk(this.getBoard().getField(row, col))) {
             this.redoStack.clear();
-            this.undoStack.push(new Board(board));
+            this.undoStack.push(new Board(this.board));
             this.currentPlayer().playDisk(this.getBoard().getField(row,col));
+            if (this.freezer != null)
+                this.freezer.run(this.board);
             this.nextPlayer();
             if (this.possiblePlays().isEmpty()) {
+                // 2. hrac nemuze tahnout, tahne opet ten samy
                 this.nextPlayer();
-                if (this.possiblePlays().isEmpty())
-                    this.end = true;
+                if (this.possiblePlays().isEmpty()) {
+                    // ani jeden hrac nemuze tahnout
+                    if (this.freezer == null) {
+                        // bez zamrzani je konec hry
+                        this.end = true;
+                    }
+                    else {
+                        // se zamrzanim zrusi pro tentokrat jakekoliv zamrznuti
+                        this.freezer.unfreeze(this.board);
+                        // opakuje se to same
+                        this.nextPlayer();
+                        if (this.possiblePlays().isEmpty()) {
+                            // 2. hrac nemuze tahnout, tahne opet ten samy
+                            this.nextPlayer();
+                            if (this.possiblePlays().isEmpty()) {
+                                // ani jeden hrac nemuze tahnout
+                                this.end = true;
+                            }
+                        }
+                    }
+                }
             }
             return true;
         }
