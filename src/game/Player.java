@@ -11,13 +11,16 @@ import board.Disk;
 public class Player {
     private boolean isWhite;
     private int diskCount;
+    private PlayerControl control;
     
     /**
      * Inicializace hráče
      * @param isWhite Barva hráče (true bílý, false černý).
+     * @param control Objekt pro samostatné rozhodnování hráče.
      */
-    public Player(boolean isWhite) {
+    public Player(boolean isWhite, PlayerControl control) {
         this.isWhite = isWhite;
+        this.control = control;
     }
     
     /**
@@ -90,6 +93,14 @@ public class Player {
      */
     public int poolSize() {
         return this.diskCount;
+    }
+    
+    /**
+     * Vrátí objekt rozhodování hráče.
+     * @return objekt rozhodování hráče.
+     */
+    public PlayerControl getControl() {
+        return this.control;
     }
     
     @Override

@@ -2,6 +2,8 @@ package UI;
 
 import board.*;
 import game.*;
+import playerControl.ComputerRandom;
+import playerControl.Human;
 
 /**
  * Testovací třída s textovým UI.
@@ -49,15 +51,11 @@ public class UI {
             
     public static void main(String [] args) {
         Game game = new Game(8, new Freezer(0,0,1)); // 0,0,1 - kazdy tah se zamrzne/rozmrzne 1 kamen
-        game.addPlayer(new Player(true));
-        game.addPlayer(new Player(false));
+        game.addPlayer(new Player(false, new Human()));
+        game.addPlayer(new Player(true, new ComputerRandom()));
         game.start();
         printGame(game);
         game.play(5,6);
-        printGame(game);
-        game.play(6,4);
-        printGame(game);
-        game.play(4,3);
         printGame(game);
     }
 }

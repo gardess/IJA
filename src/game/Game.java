@@ -45,10 +45,11 @@ public class Game {
     }
     
     /**
-     * Vloží na desku 4 startovní kameny
+     * Vloží na desku 4 startovní kameny, a pokud začíná AI, nechá ho táhnout.
      */
     public void start() {
        board.start();
+       while (playAI()) {}
     }
     
     /**
@@ -124,12 +125,16 @@ public class Game {
     
     /**
      * Aktuální hráč zahraje kámen na políčko dané souřadnicemi.
-     * Lze vrátit operací undo.
-     * @param row Rádek
-     * @param col Sloupec.
+     * Lze vrátit operací undo1.
+     * @param row Rádek od 1 do velikosti desky (včetně).
+     * @param col Sloupec od 1 do velikosti desky (včetně).
      * @return Úspěšnost akce.
+     * @throws IndexOutOfBoundsException pokud se zadané políčko nenachází na hrací desce.
      */
-    public boolean play(int row, int col) {
+    public boolean play1(int row, int col) {
+        if (row < 1 || row > board.getSize() || col < 1 || col > board.getSize())
+            throw new IndexOutOfBoundsException("Field is not in board");
+        
         if (this.currentPlayer().canPlayDisk(this.getBoard().getField(row, col))) {
             this.redoStack.clear();
             this.undoStack.push(new Board(this.board));
@@ -167,7 +172,57 @@ public class Game {
         return false;
     }
     
-    public boolean undo() {
+    /**
+     * Nechá táhnout hráče ovládaného AI.
+     * @return false, pokud na tahu není hráč ovládaný AI.
+     */
+    public boolean playAI() {
+        if (!this.currentPlayer().getControl().isAI())
+            return false;
+        
+        Field field = this.currentPlayer().getControl().getNextMove(this);
+        play1(field.getRow(), field.getCol());
+        return true;
+    }
+    
+    /**
+     * Tah hráče člověka. Po provedení tahu nechá táhnout AI, pokud je na tahu.
+     * Lze vrátit operací undo.
+     * @param row Rádek od 1 do velikosti desky (včetně).
+     * @param col Sloupec od 1 do velikosti desky (včetně).
+     * @return Úspěšnost tahu.
+     * @throws IndexOutOfBoundsException pokud se zadané políčko nenachází na hrací desce.
+     */
+    public boolean play(int row, int col) {
+        if (play1(row, col)) {
+            while (this.currentPlayer().getControl().isAI())
+                playAI();
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Zjistí zda je možné provést operaci undo
+     * @return true, pokud operace undo změní hrací desku.
+     */
+    public boolean undoable() {
+        return !undoStack.empty();
+    }
+    
+    /**
+     * Zjistí zda je možné provést operaci redo
+     * @return true, pokud operace redo změní hrací desku.
+     */
+    public boolean redoable() {
+        return !redoStack.empty();
+    }
+    
+    /**
+     * Vrátí 1 tah zpět. Změní aktuální hrací desku. Tah lze opět provést operací redo1.
+     * @return úspěšnost akce
+     */
+    public boolean undo1() {
         if (this.undoStack.empty())
             return false;
         
@@ -188,7 +243,28 @@ public class Game {
         return true;
     }
     
-    public boolean redo() {
+    /** Vrátí desku o 1 tah hráče člověka zpět. 
+     * Všechny tahy hráče AI jsou také vráceny, až do chvíle kdy byl na tahu člověk.
+     * @return Úspěšnost akce.
+     */
+    public boolean undo() {
+        if (undoable()) {
+            // provadi undo po 1 tahu, dokud neni na tahu člověk
+            while (undo1() && currentPlayer().getControl().isAI()) {}
+            
+            // pokud už nelze undo ale AI je stále na tahu, nechá ho tánout
+            while (playAI()) {}
+            
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Opět provede 1 vácený tah. Změní aktuální hrací desku.
+     * @return úspěšnost akce
+     */
+    public boolean redo1() {
         if (this.redoStack.empty())
             return false;
         
@@ -209,4 +285,22 @@ public class Game {
         }
         return true;
     }
+    
+    /** Opět provede 1 tah hráče člověka, který byl vrácen. 
+     * Všechny tahy hráče AI jsou také opět provedeny, až do chvíle kdy byl na tahu člověk.
+     * @return Úspěšnost akce.
+     */
+    public boolean redo() {
+        if (redoable()) {
+            // provede redo hrace a pripadne vsechny redo pocitace, dokud je pocitac na tahu
+            while (redo() && currentPlayer().getControl().isAI()) {}
+
+            // pokud je AI stale na tahu, provadi tahy
+            while (playAI()) {}
+            
+            return true;
+        }
+        return false;
+    }
+    
 }

@@ -8,6 +8,7 @@ package GUI;
 import game.*;
 import board.*;
 import Loadsave.*;
+import playerControl.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,14 +81,11 @@ public class Hraciplocha {
         this.polickaGui = new JPanel[pocetRadku+2][pocetRadku+2];
         
         hra = new Game(pocetRadku);
-        hra.addPlayer(new Player(true));
-        hra.addPlayer(new Player(false));
+        hra.addPlayer(new Player(false, new Human()));
+        hra.addPlayer(new Player(true, new Human()));
         deska = hra.getBoard();
         
-        hra.getBoard().getField(pocetRadku/2, pocetRadku/2).putDisk(new Disk(true));
-        hra.getBoard().getField((pocetRadku/2) + 1, (pocetRadku/2) + 1).putDisk(new Disk(true));
-        hra.getBoard().getField((pocetRadku/2) + 1, pocetRadku/2).putDisk(new Disk(false));
-        hra.getBoard().getField(pocetRadku/2, (pocetRadku/2) + 1).putDisk(new Disk(false));
+        hra.start();
         
         vytvorGui();
     }
@@ -96,8 +94,8 @@ public class Hraciplocha {
     {
         this.hra = game;
         this.deska = hra.getBoard();
-        hra.addPlayer(new Player(true));
-        hra.addPlayer(new Player(false));
+        hra.addPlayer(new Player(false, new Human()));
+        hra.addPlayer(new Player(true, new Human()));
         
         this.pocetRadku = this.deska.getSize();
         this.pocetKamenu = (this.pocetRadku * this.pocetRadku);

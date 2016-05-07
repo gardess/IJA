@@ -63,7 +63,8 @@ public class BoardField implements Field {
             Field currentField = this;
             boolean oponentBetween = false;
             currentField = currentField.nextField(dir);
-            while (!currentField.isEmpty()) {
+            // dokud se nenarazi na prazdne policko (zamrzle se chova jako prazdne)
+            while (!currentField.isEmpty() && !currentField.getDisk().isFrozen()) {
                 if (oponentDisk.equals(currentField.getDisk()))
                     oponentBetween = true;
                 else
@@ -95,13 +96,14 @@ public class BoardField implements Field {
         for (Direction dir: Direction.values()) {
             Field field = this;
             boolean oponentBetween = false;
-            while (!field.isEmpty()) {
+            // dokud se nenarazi na prazdne policko (zamrzle se chova jako prazdne)
+            while (!field.isEmpty() && !field.getDisk().isFrozen()) {
                 if (oponentDisk.equals(field.getDisk()))
                     oponentBetween = true;
                 else if (disk.equals(field.getDisk()) && oponentBetween) {
                     field = this;
                     field = field.nextField(dir);
-                    while (!field.getDisk().equals(disk)) { // turn all disks in direction
+                    while (!field.getDisk().equals(disk)) { // obrati kameny v tomto smeru
                         field.getDisk().turn();
                         field = field.nextField(dir);
                     }
@@ -118,6 +120,7 @@ public class BoardField implements Field {
      * Vrátí řádek políčka
      * @return řádek políčka
      */
+    @Override
     public int getRow(){
         return this.row;
     }
@@ -126,6 +129,7 @@ public class BoardField implements Field {
      * Vrátí sloupec políčka
      * @return sloupec políčka
      */
+    @Override
     public int getCol(){
         return this.col;
     }       

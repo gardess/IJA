@@ -90,4 +90,16 @@ public interface Field {
     * @return Úspěšnost akce.
     */
     public boolean playDisk(Disk disk);
+    
+    /**
+     * Vrátí řádek políčka
+     * @return řádek políčka
+     */
+    public int getRow();
+    
+    /**
+     * Vrátí sloupec políčka
+     * @return sloupec políčka
+     */
+    public int getCol();
 }
