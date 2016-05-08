@@ -45,20 +45,12 @@ public class Hraciplocha {
     private JLabel skore;
     private JLabel naTahu;
     
-    
-    private JButton vloz;
     private JButton konec;
     private JButton uloz;
     private JButton undo;
     private JButton redo;
     
     private int pocetRadku;
-    private int vlozRadek;
-    private int vlozSloupec;
-    
-    private int bilySkore = 0;
-    private int cernySkore = 0;
-    private int pocetKamenu;
     
     // hraci plocha
     private Board deska;
@@ -87,7 +79,6 @@ public class Hraciplocha {
     {
         //polickaGui.setLayout(null);
         this.pocetRadku = velikostDesky;
-        this.pocetKamenu = (this.pocetRadku * this.pocetRadku);
         this.polickaGui = new JPanel[pocetRadku+2][pocetRadku+2];
         if(zamrzani == 1)
         {
@@ -198,7 +189,6 @@ public class Hraciplocha {
         this.C = CParam;
         
         this.pocetRadku = this.deska.getSize();
-        this.pocetKamenu = (this.pocetRadku * this.pocetRadku);
         this.polickaGui = new JPanel[pocetRadku+2][pocetRadku+2];
         if(tah == 1)
         {
@@ -227,7 +217,7 @@ public class Hraciplocha {
         okno.toFront();
         
         // vypis informaci
-        pocetKamenuS = new JLabel("počet kamenů");
+        pocetKamenuS = new JLabel("zbývá kamenů");
         pocetKamenuS.setBounds((60*pocetRadku)+50, 350, 90, 30);
         skore = new JLabel("skóre");
         skore.setBounds((60*pocetRadku)+50, 400, 90, 30);
@@ -243,14 +233,14 @@ public class Hraciplocha {
         cerny.setFont(new java.awt.Font("Dodger", 1, 20));
         cernySkoreS = new JLabel("2");
         cernySkoreS.setBounds((60*pocetRadku)+170, 400, 90, 30);
-        cernyPocet = new JLabel(Integer.toString(pocetKamenu));
+        cernyPocet = new JLabel(Integer.toString(hra.getPlayer(false).poolSize()));
         cernyPocet.setBounds((60*pocetRadku)+170, 350, 90, 30);
         bily = new JLabel("White");
         bily.setBounds((60*pocetRadku)+300, 300, 90, 30);
         bily.setFont(new java.awt.Font("Dodger", 1, 20));
         bilySkoreS = new JLabel("2");
         bilySkoreS.setBounds((60*pocetRadku)+320, 400, 90, 30);
-        bilyPocet = new JLabel(Integer.toString(pocetKamenu));
+        bilyPocet = new JLabel(Integer.toString(hra.getPlayer(true).poolSize()));
         bilyPocet.setBounds((60*pocetRadku)+320, 350, 90, 30);
         
         okno.getContentPane().add(cerny);
@@ -366,7 +356,6 @@ public class Hraciplocha {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        bilySkore++;
                     }
                     else
                     {
@@ -374,7 +363,6 @@ public class Hraciplocha {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        bilySkore++;
                     }
                 }
                 else
@@ -384,14 +372,12 @@ public class Hraciplocha {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        cernySkore++;
                     }
                     else
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        cernySkore++;
                     }
                 }
                 
@@ -407,8 +393,6 @@ public class Hraciplocha {
     {
         
         panel.removeAll();
-        bilySkore = 0;
-        cernySkore = 0;
         java.util.List<Field> mozneTahy = hra.possiblePlays();
         Field policko;
         int velikost = mozneTahy.size();
@@ -452,7 +436,6 @@ public class Hraciplocha {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        bilySkore++;
                     }
                     else
                     {
@@ -460,7 +443,6 @@ public class Hraciplocha {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        bilySkore++;
                     }
                 }
                 else
@@ -470,23 +452,21 @@ public class Hraciplocha {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        cernySkore++;
                     }
                     else
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        cernySkore++;
                     }
                 }
                 
             }
         }
-        bilySkoreS.setText((Integer.toString(bilySkore)));
-        cernySkoreS.setText((Integer.toString(cernySkore)));
-        bilyPocet.setText((Integer.toString(pocetKamenu-bilySkore)));
-        cernyPocet.setText((Integer.toString(pocetKamenu-cernySkore)));
+        bilySkoreS.setText((Integer.toString(hra.score(true))));
+        cernySkoreS.setText((Integer.toString(hra.score(false))));
+        bilyPocet.setText((Integer.toString(hra.getPlayer(true).poolSize())));
+        cernyPocet.setText((Integer.toString(hra.getPlayer(false).poolSize())));
         naTahu.setText("na tahu hráč " + hra.currentPlayer().toString());
         okno.getContentPane().add(panel);
         okno.repaint();
@@ -507,13 +487,13 @@ public class Hraciplocha {
             vitezP.setBackground(Color.red);
             vitezP.setBounds(0, 0, 1200, 850);
             vitezP.setLayout(null);
-            if(bilySkore > cernySkore)
+            if(hra.score(true) > hra.score(false))
             {
-                vitez = new JLabel("Vítězem je hráč White se skóre " + Integer.toString(bilySkore));
+                vitez = new JLabel("Vítězem je hráč White se skóre " + Integer.toString(hra.score(true)));
             }
-            else if(bilySkore < cernySkore)
+            else if(hra.score(true) < hra.score(false))
             {
-                vitez = new JLabel("Vítězem je hráč Black se skóre " + Integer.toString(cernySkore));
+                vitez = new JLabel("Vítězem je hráč Black se skóre " + Integer.toString(hra.score(false)));
             }
             else
             {

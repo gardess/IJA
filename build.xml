@@ -3,17 +3,18 @@
 
     <target name="clean">
         <delete includeemptydirs="true">
-			<fileset dir="build" includes="**/*"/>
-		</delete>
+            <fileset dir="build" includes="**/*"/>
+        </delete>
         <delete includeemptydirs="true">
-			<fileset dir="dest-client" includes="**/*"/>
-		</delete>
+            <fileset dir="dest-client" includes="**/*"/>
+        </delete>
         <delete includeemptydirs="true">
-			<fileset dir="doc" includes="**/*"/>
-		</delete>
+            <fileset dir="doc" includes="**/*"/>
+        </delete>
     </target>
 
     <target name="compile">
+        <mkdir dir="build" />
         <javac encoding="UTF-8" srcdir="src" destdir="build"/>
         <jar destfile="dest-client/othello-client.jar" basedir="build">
             <manifest>
