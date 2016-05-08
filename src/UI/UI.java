@@ -55,6 +55,10 @@ public class UI {
         }
     }
             
+    /**
+     * Textové UI
+     * @param args Parametry příkazové řádky
+     */
     public static void main(String [] args) {
         Game game = new Game(8, new Freezer(0,0,1)); // 0,0,1 - kazdy tah se zamrzne/rozmrzne 1 kamen
         game.addPlayer(new Player(false, new Human()));

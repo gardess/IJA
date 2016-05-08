@@ -94,6 +94,10 @@ public class Hraciplocha {
         if(zamrzani == 1)
         {
             hra = new Game(pocetRadku, new Freezer(IParam,BParam,CParam));
+            this.zamrzani = zamrzani;
+            this.I = IParam;
+            this.B = BParam;
+            this.C = CParam;
         }
         else if(zamrzani == 0)
         {
@@ -190,6 +194,10 @@ public class Hraciplocha {
             hra.addPlayer(new Player(true, new ComputerMinMax()));
         }
         
+        this.zamrzani = zamrzani;
+        this.I = IParam;
+        this.B = BParam;
+        this.C = CParam;
         
         this.pocetRadku = this.deska.getSize();
         this.pocetKamenu = (this.pocetRadku * this.pocetRadku);
@@ -353,7 +361,19 @@ public class Hraciplocha {
         okno.add(panel);
 
         
-        //System.out.println("TEST 1");
+        // mozne tahy
+        java.util.List<Field> mozneTahy = hra.possiblePlays();
+        Field policko;
+        int velikost = mozneTahy.size();
+        tahy posiblePlay[] = new tahy[velikost+1];
+        for(int i = 0; i < velikost; i++)
+        {
+            policko = mozneTahy.get(i);
+            posiblePlay[i] = new tahy(policko.getRow(),policko.getCol());
+            
+        }
+        int k = 0;
+        
         for(int i = 1; i < pocetRadku+1; i++)
         {
             for(int j = 1; j < pocetRadku+1; j++)
@@ -361,10 +381,22 @@ public class Hraciplocha {
                 pole = deska.getField(i, j);
                 if(pole.getDisk() == null)
                 {
-                    picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.volnePole));
-                    polickaGui[i][j] = new JPanel();
-                    polickaGui[i][j].add(picLabel);
-                    panel.add(polickaGui[i][j]);
+                    if((k != velikost) && ((posiblePlay[k].row == i) && (posiblePlay[k].col == j)))
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.moznePole));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        k++;
+                        System.out.println("k: " + k);
+                    }
+                    else
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.volnePole));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                    }
                 }
                 else if(pole.getDisk().isWhite() == true)
                 {
@@ -378,6 +410,7 @@ public class Hraciplocha {
                     }
                     else
                     {
+                        
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
                         polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
@@ -393,7 +426,7 @@ public class Hraciplocha {
                         polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        bilySkore++;
+                        cernySkore++;
                     }
                     else
                     {
@@ -419,6 +452,18 @@ public class Hraciplocha {
         panel.removeAll();
         bilySkore = 0;
         cernySkore = 0;
+        java.util.List<Field> mozneTahy = hra.possiblePlays();
+        Field policko;
+        int velikost = mozneTahy.size();
+        tahy posiblePlay[] = new tahy[velikost+1];
+        for(int i = 0; i < velikost; i++)
+        {
+            policko = mozneTahy.get(i);
+            posiblePlay[i] = new tahy(policko.getRow(),policko.getCol());
+            
+        }
+        int k = 0;
+        
         for(int i = 1; i < pocetRadku+1; i++)
         {
             for(int j = 1; j < pocetRadku+1; j++)
@@ -426,10 +471,22 @@ public class Hraciplocha {
                 pole = deska.getField(i, j);
                 if(pole.getDisk() == null)
                 {
-                    picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.volnePole));
-                    polickaGui[i][j] = new JPanel();
-                    polickaGui[i][j].add(picLabel);
-                    panel.add(polickaGui[i][j]);
+                    if((k != velikost) && ((posiblePlay[k].row == i) && (posiblePlay[k].col == j)))
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.moznePole));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                        k++;
+                        System.out.println("k: " + k);
+                    }
+                    else
+                    {
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.volnePole));
+                        polickaGui[i][j] = new JPanel();
+                        polickaGui[i][j].add(picLabel);
+                        panel.add(polickaGui[i][j]);
+                    }
                 }
                 else if(pole.getDisk().isWhite() == true)
                 {
@@ -443,6 +500,7 @@ public class Hraciplocha {
                     }
                     else
                     {
+                        
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
                         polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
@@ -458,7 +516,7 @@ public class Hraciplocha {
                         polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
-                        bilySkore++;
+                        cernySkore++;
                     }
                     else
                     {
@@ -536,4 +594,33 @@ public class Hraciplocha {
     {
         return this.pocetRadku;
     }
+    
+    /**
+     * Třída reprezentující možné tahy hráče
+     */
+    public class tahy{
+
+        /**
+         * Rádková souřadnice tahu
+         */
+        public int row;
+
+        /**
+         * Sloupcová souřadnice tahu
+         */
+        public int col;
+        
+        /**
+         * Konstruktor pro uložení souřadnic tahu
+         * @param row Rádková souřadnice tahu
+         * @param col Sloupcová souřadnice tahu
+         */
+        public tahy(int row, int col)
+        {
+            this.row = row;
+            this.col = col;
+        }
+    }
 }
+
+

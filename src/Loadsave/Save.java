@@ -48,6 +48,10 @@ public class Save {
         this.naTahu = game.currentPlayer().toString();
         this.protihrac = protihrac;
         this.barva = barva;
+        this.zamrzani = zamrzani;
+        this.I = IParam;
+        this.B = BParam;
+        this.C = CParam;
         uloz(this.soubor);
         
     }

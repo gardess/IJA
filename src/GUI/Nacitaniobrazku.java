@@ -17,6 +17,11 @@ public class Nacitaniobrazku {
     public static BufferedImage volnePole;
 
     /**
+     * Obrázek pole na které je možné vložit svůj kámen
+     */
+    public static BufferedImage moznePole;
+
+    /**
      * Obrázek bílého kamene
      */
     public static BufferedImage bilyKamen;
@@ -38,6 +43,7 @@ public class Nacitaniobrazku {
     public Nacitaniobrazku() throws IOException
     {
         Nacitaniobrazku.volnePole = ImageIO.read(new File("lib/img/pole1.png"));
+        Nacitaniobrazku.moznePole = ImageIO.read(new File("lib/img/moznePole.png"));
         Nacitaniobrazku.bilyKamen = ImageIO.read(new File("lib/img/bilyKamen.png"));
         Nacitaniobrazku.cernyKamen = ImageIO.read(new File("lib/img/cernyKamen.png"));
         Nacitaniobrazku.zamrzlyKamen = ImageIO.read(new File("lib/img/zamrznutyKamen.png"));
