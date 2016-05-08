@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Loadsave;
 
 import game.*;
@@ -15,8 +10,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
- *
- * @author milan
+ * Třída pro uložení hry
+ * @author Milan Gardáš
  */
 public class Save {
     
@@ -32,6 +27,19 @@ public class Save {
     private int B;
     private int C;
     
+    /**
+     * Konstruktor, který slouží k nastavení proměnných potřebných pro úspěšné uložení hry
+     * @param game Ukládaná hra
+     * @param file Soubor do kterého se bude ukládat
+     * @param protihrac Typ protihráče
+     * @param barva Barva zakládajícího lidského hráče
+     * @param zamrzani Nastavení zamrzání kamenů
+     * @param IParam Doba než se zablokují kameny
+     * @param BParam Maximální doba po kterou jsou kameny zablokovány
+     * @param CParam Počet zablokovaných kamenů
+     * @throws FileNotFoundException Nenalezení souboru
+     * @throws UnsupportedEncodingException Špatné kódování souboru
+     */
     public Save(Game game, File file, int protihrac, int barva, int zamrzani, int IParam, int BParam, int CParam) throws FileNotFoundException, UnsupportedEncodingException
     {
         this.pocetRadku = game.getBoard().getSize();
@@ -44,6 +52,12 @@ public class Save {
         
     }
     
+    /**
+     * Metoda, která zapíše do souboru hodnoty odpovídající aktuálnímu stavu hry
+     * @param soubor Soubor do kterého se zapisuje
+     * @throws FileNotFoundException Nenalezení souboru
+     * @throws UnsupportedEncodingException Špatné kódování souboru
+     */
     public void uloz(File soubor) throws FileNotFoundException, UnsupportedEncodingException 
     {
         try (PrintWriter zapis = new PrintWriter(soubor, "UTF-8")) {

@@ -1,4 +1,3 @@
-
 package playerControl;
 
 import game.PlayerControl;
@@ -14,6 +13,9 @@ import java.util.Random;
 public class ComputerRandom implements PlayerControl {
     private Random random;
     
+    /**
+     * Vytvoří generátor náhodných čísel
+     */
     public ComputerRandom() {
         random = new Random();
     }

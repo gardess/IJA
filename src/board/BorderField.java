@@ -4,7 +4,7 @@ package board;
 /**
  * Reprezentuje pomocné, neplatné políčko na hrací desce.
  * Políčko je vždy prázdné a nelze na něj nic vložit.
- * @author Tom
+ * @author Tomáš Zahradníček
  */
 public class BorderField implements Field{
     

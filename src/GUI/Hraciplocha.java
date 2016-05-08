@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import game.*;
@@ -26,8 +21,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 /**
- *  Obrazovka samotne hry
- * @author Milan Gardáš (xgarda04)
+ * Obrazovka samotne hry
+ * @author Milan Gardáš
  */
 public class Hraciplocha {
     
@@ -80,7 +75,17 @@ public class Hraciplocha {
     private int B;
     private int C;
     
-    public Hraciplocha(int velikostDesky, int protihrac, int barva, int zamrzani, int IParam, int BParam, int CParam) throws IOException
+    /**
+     * Konstruktor pro založení nové hry
+     * @param velikostDesky Velikost desky získaná od uživatele
+     * @param protihrac Typ protihráče
+     * @param barva Barva vybraná hráčem
+     * @param zamrzani Nastavení zamrzání kamenů
+     * @param IParam Doba než se zablokují kameny
+     * @param BParam Maximální doba po kterou jsou kameny zablokovány
+     * @param CParam Počet zablokovaných kamenů
+     */
+    public Hraciplocha(int velikostDesky, int protihrac, int barva, int zamrzani, int IParam, int BParam, int CParam) 
     {
         //polickaGui.setLayout(null);
         this.pocetRadku = velikostDesky;
@@ -135,11 +140,27 @@ public class Hraciplocha {
         
         hra.start();
         
-        vytvorGui();
+        try {
+            vytvorGui();
+        } catch (IOException ex) {
+            Logger.getLogger(Hraciplocha.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     // konstruktor pro nacteni hry
-    public Hraciplocha(Game game, int tah, int cernyHrac, int bilyHrac, int zamrzani, int IParam, int BParam, int CParam) throws IOException
+
+    /**
+     * Konstruktor pro načtenou hru
+     * @param game Načtená hra s nastavenou deskou
+     * @param tah Určuje, který hráč je na tahu
+     * @param cernyHrac Typ černého hráče
+     * @param bilyHrac Typ bílého hráče
+     * @param zamrzani Nastavení zamrzání kamenů
+     * @param IParam Doba než se zablokují kameny
+     * @param BParam Maximální doba po kterou jsou kameny zablokovány
+     * @param CParam Počet zablokovaných kamenů
+     */
+    public Hraciplocha(Game game, int tah, int cernyHrac, int bilyHrac, int zamrzani, int IParam, int BParam, int CParam)
     {
         this.hra = game;
         this.deska = hra.getBoard();
@@ -177,9 +198,17 @@ public class Hraciplocha {
         {
             game.nextPlayer();
         }
-        vytvorGui();
+        try {
+            vytvorGui();
+        } catch (IOException ex) {
+            Logger.getLogger(Hraciplocha.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
+    /**
+     * Metoda pro vytvoření GUI pro danou hru
+     * @throws IOException Nezdařená I/O operace
+     */
     public void vytvorGui() throws IOException
     {
 
@@ -381,6 +410,9 @@ public class Hraciplocha {
         okno.getContentPane().add(panel);
     }
     
+    /**
+     * Metoda pro aktualizaci GUI hrací desky
+     */
     public void updateBoard()
     {
         
@@ -451,6 +483,9 @@ public class Hraciplocha {
         konecHry();
     }
     
+    /**
+     * Metoda kontrolující zda nenastal konec hry
+     */
     public void konecHry()
     {
         if(hra.isEnd() == true)
@@ -493,6 +528,10 @@ public class Hraciplocha {
         }
     }
     
+    /**
+     * Metoda pro zjištění počtu řádků hrací desky
+     * @return Počet řádků hrací desky
+     */
     public int radkuPocet()
     {
         return this.pocetRadku;

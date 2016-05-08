@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
-
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,19 +6,34 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- *  Načtení obrazků pro rychlejší běh programu
- * @author Milan Gardáš (xgarda04)
+ * Načtení obrázků pro rychlejší běh aplikace
+ * @author Milan Gardáš
  */
 public class Nacitaniobrazku {
     
+    /**
+     * Obrázek volného pole
+     */
     public static BufferedImage volnePole;
+
+    /**
+     * Obrázek bílého kamene
+     */
     public static BufferedImage bilyKamen;
+
+    /**
+     * Obrázek černého kamene
+     */
     public static BufferedImage cernyKamen;
+
+    /**
+     * Obrázek zamrzlého kamene
+     */
     public static BufferedImage zamrzlyKamen;
     
     /**
-     * Metoda, která načte obrázky
-     * @throws IOException vyjímka při nenalezení obrázku
+     * Metoda pro načtání obrázků
+     * @throws IOException Při nenalezení obrázků
      */
     public Nacitaniobrazku() throws IOException
     {

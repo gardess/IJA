@@ -1,4 +1,3 @@
-
 package game;
 
 import board.Field;
@@ -36,7 +35,7 @@ public class Player {
     
     /**
      * Zkopíruje hráče. Zůstává barva, počet kamenů.
-     * @player player Původní hráč.
+     * @param player Původní hráč.
      */
     public Player(Player player){
         this.isWhite = player.isWhite;

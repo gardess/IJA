@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import javax.swing.*;
@@ -14,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *  Obrazovka pro nastaveni vlastnosti hry
- * @author Milan Gardáš (xgarda04)
+ * Obrazovka pro nastavení vlastností nové hry
+ * @author Milan Gardáš
  */
 public class Newgame extends JFrame{
     
@@ -33,8 +28,6 @@ public class Newgame extends JFrame{
     private JLabel BText;
     private JLabel CText;
     private JLabel barva;
-    
-    //private JSlider velikost;
     
     private JRadioButton v6;
     private JRadioButton v8;
@@ -69,7 +62,9 @@ public class Newgame extends JFrame{
     private int BI;
     private int CI;
     
-    
+    /**
+     * Konstruktor pro obrazovku nastavení nové hry
+     */
     public Newgame()
     {
         okno = new JFrame("Othello");
@@ -254,15 +249,9 @@ public class Newgame extends JFrame{
             zamrzaniKamenu();
             protihracVolba();
             barvaVolba();
-            try {
-                // obrazovka se hrou
-                
-                System.out.println("protihrac: " + protihrac);
-                System.out.println("barva: " + barvaV);
-                new Hraciplocha(velikostDesky, protihrac, barvaV, zamrzaniKamenuI, II, BI, CI);
-            } catch (IOException ex) {
-                Logger.getLogger(Newgame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            System.out.println("protihrac: " + protihrac);
+            System.out.println("barva: " + barvaV);
+            new Hraciplocha(velikostDesky, protihrac, barvaV, zamrzaniKamenuI, II, BI, CI);
         });
         okno.getContentPane().add(start);
         
@@ -283,6 +272,9 @@ public class Newgame extends JFrame{
         okno.getContentPane().add(konec);
     }
     
+    /**
+     * Metoda pro nastavení velikosti hrací desky
+     */
     public void getVelikost()
     {
         if(v6.isSelected())
@@ -303,6 +295,9 @@ public class Newgame extends JFrame{
         }
     }
     
+    /**
+     * Metoda pro zjištění zda bude zapnuto zamrzání kamenů. Pokud je zapnuto pak se nastaví proměnné I, B a C.
+     */
     public void zamrzaniKamenu()
     {
         if(ne.isSelected())
@@ -318,6 +313,9 @@ public class Newgame extends JFrame{
         }
     }
     
+    /**
+     * Metoda pro zjištění typu protihráče
+     */
     public void protihracVolba()
     {
         if(clovek.isSelected())
@@ -334,6 +332,9 @@ public class Newgame extends JFrame{
         }
     }
     
+    /**
+     * Metoda pro zjištění vybrané barvy
+     */
     public void barvaVolba()
     {
         if(cerna.isSelected())

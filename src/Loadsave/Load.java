@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Loadsave;
 
 import game.*;
@@ -16,8 +11,8 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 
 /**
- *
- * @author milan
+ * Třida sloužící pro načtení uložené hry
+ * @author Milan Gardáš
  */
 public class Load {
 
@@ -31,20 +26,24 @@ public class Load {
     int C;
     int naTahu;
     
+    /**
+     * Konstruktor, který nic nedělá
+     * @param soubor Soubor ze kterého se načte hra
+     * @throws IOException Pokud selze I/O operace
+     */
     public Load(File soubor) throws IOException 
     {
-        //nacti(soubor);
+
     }
     
     /**
-     *
-     * @param soubor Soubor ze ktereho se nacte hra
+     * Metoda, která načte hru ze souboru
+     * @param soubor Soubor ze kterého se načte hra
      * @return Hra s nastavenou deskou
-     * @throws IOException Pokud selze IO operace
+     * @throws IOException Pokud selze I/O operace
      */
     public Game nacti(File soubor) throws IOException
     {
-        String everything;
         try(BufferedReader br = new BufferedReader(new FileReader(soubor))) 
         {
             StringBuilder sb = new StringBuilder();
@@ -110,35 +109,67 @@ public class Load {
         return hra;
     }
     
+    /**
+     * Metoda pro zjištění který hráč je na tahu
+     * @return Číselná hodnot, která reprezentuje hráče na tahu
+     */
     public int getNaTahu()
     {
         return naTahu;
     }
 
+    /**
+     * Metoda pro zjištění velikosti hracího pole
+     * @return Počet řádků hracího pole
+     */
     public int getPocetRadku() {
         return pocetRadku;
     }
 
+    /**
+     * Metoda, která zjišťuje typ černého hráče
+     * @return Typ černého hráče
+     */
     public int getCernyHrac() {
         return cernyHrac;
     }
 
+    /**
+     * Metoda, která zjišťuje typ bílého hráče
+     * @return Typ bílého hráče
+     */
     public int getBilyHrac() {
         return bilyHrac;
     }
 
+    /**
+     * Metoda, která zjišťuje zda je zapnuto zamrzání kamenů
+     * @return Hodnota reprezentující zda je zamrzání kamenů zapnuto či vypnuto
+     */
     public int getZamrzani() {
         return zamrzani;
     }
 
+    /**
+     * Metoda pro získání hodnoty parametru I při zamrzání kamenů
+     * @return Hodnota parametru I
+     */
     public int getI() {
         return I;
     }
 
+    /**
+     * Metoda pro získání hodnoty parametru B při zamrzání kamenů
+     * @return Hodnota parametru B
+     */
     public int getB() {
         return B;
     }
 
+    /**
+     * Metoda pro získání hodnoty parametru C při zamrzání kamenů
+     * @return Hodnota parametru C
+     */
     public int getC() {
         return C;
     }

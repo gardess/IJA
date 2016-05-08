@@ -1,11 +1,20 @@
 
 package board;
 
+/**
+ * Třída reprezentující jedno políčko hrací desky
+ * @author Tomáš Zahradníček
+ */
 public class BoardField implements Field {
     private int row, col;
     private Field nextFields[];
     private Disk disk;
     
+    /**
+     * Kontruktor pro inicializaci políčka
+     * @param row Radek na kterém se políčko nachází
+     * @param col Sloupec na kterém se políčko nachází
+     */
     public BoardField(int row, int col) {
         this.row = row;
         this.col = col;
@@ -13,6 +22,10 @@ public class BoardField implements Field {
         disk = null;
     }
     
+    /**
+     * Konstruktor pro kopírování políčka
+     * @param field Políčko ze kterého se bude kopírovat
+     */
     public BoardField(BoardField field) {
         this.row = field.row;
         this.col = field.col;

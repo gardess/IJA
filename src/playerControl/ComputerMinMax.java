@@ -1,4 +1,3 @@
-
 package playerControl;
 
 import game.PlayerControl;
@@ -13,12 +12,15 @@ import game.Freezer;
 public class ComputerMinMax implements PlayerControl {
     private int maxDepth;
     
+    /**
+     * Konstruktor pro počítačového hráče hrajícího metodou MinMax.
+     */
     public ComputerMinMax() {
         this(5);
     }
     
     /**
-     * vytvoří objekt s explicitní hloubkou prohledávání.
+     * Vytvoří objekt s explicitní hloubkou prohledávání.
      * @param maxDepth hloubka prohledávání
      */
     public ComputerMinMax(int maxDepth) {
@@ -38,7 +40,7 @@ public class ComputerMinMax implements PlayerControl {
     }
     
     /**
-     * zjistí nejlepší tah pro hráče na tahu.
+     * Zjistí nejlepší tah pro hráče na tahu.
      * @param game Hra, pro kterou se zjistí tah.
      * @param depth Zbývající hloubka.
      * @return dvojce (nejlepší tah, ohodnocení), kde větší ohodnocení znamená lepší pro bíleho hráče.
@@ -81,7 +83,7 @@ public class ComputerMinMax implements PlayerControl {
     }
 
     /**
-     * Dvojce (políčko, ohodnocení) pro ohodnocovaní jednotlivých tahů
+     * Dvojice (políčko, ohodnocení) pro ohodnocovaní jednotlivých tahů
      */
     private class ScoredField {
         public Field field;

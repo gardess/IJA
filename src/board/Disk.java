@@ -1,6 +1,9 @@
-
 package board;
 
+/**
+ * Třída reprezentující hrací kámen
+ * @author Tomáš Zahradníček
+ */
 public class Disk {
     private boolean isWhite;
     private boolean isFrozen;

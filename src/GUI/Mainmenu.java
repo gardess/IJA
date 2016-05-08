@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
-/**
- *
- * @author milan
- */
 import Loadsave.Load;
 import game.Game;
 import javax.swing.*;
@@ -21,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *  Hlavni menu
- * @author Milan Gardáš (xgarda04)
+ * Hlavní menu
+ * @author Milan Gardáš
  */
 public class Mainmenu extends JFrame
 {
@@ -34,6 +25,9 @@ public class Mainmenu extends JFrame
     
     private JLabel text;
     
+    /**
+     * Kontruktor pro vytvoření GUI hlavního menu
+     */
     public Mainmenu()
     {
         okno = new JFrame("Othello");
@@ -94,6 +88,11 @@ public class Mainmenu extends JFrame
         okno.getContentPane().add(konec);
     }
 
+    /**
+     * Metoda spouštějící celou hru
+     * @param args Parametry příkazové řádky
+     * @throws IOException Chyba I/O operace
+     */
     public static void main(String[] args) throws IOException {
         Nacitaniobrazku obr = new Nacitaniobrazku();
         new Mainmenu();

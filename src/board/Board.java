@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Iterator;
 
 /**
- * Třída neprezentujicí hrací desku. Deska ma velikost (rozměr) N a rozlišuje
+ * Třída reprezentujicí hrací desku. Deska ma velikost (rozměr) N a rozlišuje
  * aktivní a neaktivní pole. Aktivní pole jsou na řádcích a sloupcích od 1 do N.
  * Neaktivní pole jsou na řádcích a sloupcích 0 a N+1.
  * @author Tomáš Zahradníček
@@ -32,6 +32,9 @@ public class Board implements Iterable<Field> {
         connectFields();              
     }
     
+    /**
+     * Metoda pro vložení kamenů na začátku hry
+     */
     public void start() {
         this.fields[size/2][size/2].putDisk(new Disk(true));
         this.fields[size/2+1][size/2+1].putDisk(new Disk(true));

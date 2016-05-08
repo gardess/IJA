@@ -11,6 +11,11 @@ import playerControl.Human;
  * @author Tomáš Zahradníček
  */
 public class UI {
+
+    /**
+     * Metoda pro zobrazení textového UI
+     * @param game Hra ze které chceme zobrazit textové UI 
+     */
     public static void printGame(Game game) {
         Board board = game.getBoard();
         System.out.println("-------------------");
