@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,8 +35,6 @@ public class Hraciplocha {
     private JPanel panel;
     
     private JLabel picLabel;
-    private JLabel radekS;
-    private JLabel sloupecS;
     private JLabel cerny;
     private JLabel cernySkoreS;
     private JLabel cernyPocet;
@@ -50,9 +51,6 @@ public class Hraciplocha {
     private JButton uloz;
     private JButton undo;
     private JButton redo;
-    
-    private JSpinner radek;
-    private JSpinner sloupec;
     
     private int pocetRadku;
     private int vlozRadek;
@@ -262,43 +260,6 @@ public class Hraciplocha {
         okno.getContentPane().add(bilySkoreS);
         okno.getContentPane().add(bilyPocet);
         
-        
-        SpinnerModel sm1 = new SpinnerNumberModel(1,1,pocetRadku,1);
-        SpinnerModel sm2 = new SpinnerNumberModel(1,1,pocetRadku,1);
-        
-// vlozeni kamene
-        radekS = new JLabel("Rádek");
-        radekS.setBounds((60*pocetRadku)+150, 100, 90, 30);
-        okno.getContentPane().add(radekS);
-        sloupecS = new JLabel("Sloupec");
-        sloupecS.setBounds((60*pocetRadku)+250, 100, 90, 30);
-        okno.getContentPane().add(sloupecS);
-        radek = new JSpinner(sm1);
-        radek.setBounds((60*pocetRadku)+200, 105, 30, 20);
-        okno.getContentPane().add(radek);
-        sloupec = new JSpinner(sm2);
-        sloupec.setBounds((60*pocetRadku)+300, 105, 30, 20);
-        okno.getContentPane().add(sloupec);
-        
-        vloz = new JButton("Vlož kámen");
-        vloz.setBounds((60*pocetRadku)+350, 105, 100, 20);
-        vloz.addActionListener((ActionEvent e) -> {
-            vlozRadek = ((Integer) radek.getValue());
-            vlozSloupec = ((Integer) sloupec.getValue());
-            
-            //System.out.println(deska);
-            hra.play(vlozRadek,vlozSloupec);
-            updateBoard();
-            
-            // vlozeni kamene pocitacem
-            /*if(hra.currentPlayer().getControl().isAI() == true)
-            {
-                
-            }*/
-            
-        });
-        okno.getContentPane().add(vloz);
-        
         uloz = new JButton("Ulož hru");
         uloz.setBounds((60*pocetRadku)+150, 25, 100, 30);
         uloz.addActionListener((ActionEvent e) -> {
@@ -379,12 +340,13 @@ public class Hraciplocha {
             for(int j = 1; j < pocetRadku+1; j++)
             {
                 pole = deska.getField(i, j);
+                polickaGui[i][j] = new JPanel();
+                polickaGui[i][j].addMouseListener(new FieldListener(i, j));
                 if(pole.getDisk() == null)
                 {
                     if((k != velikost) && ((posiblePlay[k].row == i) && (posiblePlay[k].col == j)))
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.moznePole));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         k++;
@@ -393,7 +355,6 @@ public class Hraciplocha {
                     else
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.volnePole));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                     }
@@ -403,7 +364,6 @@ public class Hraciplocha {
                     if(pole.getDisk().isFrozen() == true)
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         bilySkore++;
@@ -412,7 +372,6 @@ public class Hraciplocha {
                     {
                         
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         bilySkore++;
@@ -423,7 +382,6 @@ public class Hraciplocha {
                     if(pole.getDisk().isFrozen() == true)
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         cernySkore++;
@@ -431,7 +389,6 @@ public class Hraciplocha {
                     else
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         cernySkore++;
@@ -469,12 +426,13 @@ public class Hraciplocha {
             for(int j = 1; j < pocetRadku+1; j++)
             {
                 pole = deska.getField(i, j);
+                polickaGui[i][j] = new JPanel();
+                polickaGui[i][j].addMouseListener(new FieldListener(i, j));
                 if(pole.getDisk() == null)
                 {
                     if((k != velikost) && ((posiblePlay[k].row == i) && (posiblePlay[k].col == j)))
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.moznePole));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         k++;
@@ -483,7 +441,6 @@ public class Hraciplocha {
                     else
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.volnePole));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                     }
@@ -493,7 +450,6 @@ public class Hraciplocha {
                     if(pole.getDisk().isFrozen() == true)
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         bilySkore++;
@@ -502,7 +458,6 @@ public class Hraciplocha {
                     {
                         
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         bilySkore++;
@@ -513,7 +468,6 @@ public class Hraciplocha {
                     if(pole.getDisk().isFrozen() == true)
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         cernySkore++;
@@ -521,7 +475,6 @@ public class Hraciplocha {
                     else
                     {
                         picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
-                        polickaGui[i][j] = new JPanel();
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                         cernySkore++;
@@ -593,6 +546,41 @@ public class Hraciplocha {
     public int radkuPocet()
     {
         return this.pocetRadku;
+    }
+
+    /**
+     * Trida pro sledovani klikani na policka.
+     */
+    private class FieldListener extends MouseAdapter {
+
+        private int row;
+        private int col;
+        private boolean pressed;
+        
+        public FieldListener(int row, int col) {
+            this.col = col;
+            this.row = row;
+            this.pressed = false;
+        }
+        
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (pressed) {
+                hra.play(row, col);
+                updateBoard();
+                pressed = false;
+            }
+        }
+        
+        @Override
+        public void mouseExited(MouseEvent e) {
+            pressed = false;
+        }
+        
+        @Override
+        public void mousePressed(MouseEvent e) {
+            pressed = true;
+        }
     }
     
     /**

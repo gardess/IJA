@@ -14,6 +14,7 @@ import java.util.Random;
  * zamrznutí může být provedeno jen při volání run().
  * Střídají se 2 fáze: rozmrznuté a zamrznuté kameny.
  * Po uplynutí času fáze se na druhou změní až po volání run().
+ * @author Tomáš Zahradníček
  */
 public class Freezer {
     Random random;
@@ -52,13 +53,15 @@ public class Freezer {
      * @param board Herní deska na které se má zamrznutí/rozmrznutí provést
      */
     public void run(Board board) {
+        boolean prevPhase = freezePhase;
+        
         if (System.currentTimeMillis() >= timeToChange) {
             freezePhase = !freezePhase;
             timeToChange = generateTime();
         }
-        if (freezePhase)
+        if (!prevPhase && freezePhase)
             freeze(board);
-        else
+        else if (!freezePhase)
             unfreeze(board);
     }
     
