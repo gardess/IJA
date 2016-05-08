@@ -238,23 +238,35 @@ public class Game {
      * @return úspěšnost akce
      */
     public boolean undo1() {
-        if (this.undoStack.empty())
-            return false;
+        if (undoStack.empty())
+                return false;
+
+        end = false;
+
+        Board boardAfter = board;
+
         
-        // uloží stávajcí desku
         this.redoStack.push(this.board);
-        // načte předchozí
         board = this.undoStack.pop();
         
-        if (!end)
-            this.nextPlayer();
-        if (this.possiblePlays().isEmpty()) {
-            this.nextPlayer();
-        }
-        
-        this.end = false;
-        // vrati kamen hráči nyní na tahu
-        this.currentPlayer().backDisk();
+        Board boardBefore = board;
+        int size = board.getSize();
+        boolean lastPlayed = false; // barva hrace na tahu predchozi tah
+
+        // zjisti kdo dal posledni tah kamen
+        for (int row = 1; row <= size; row++)
+                for (int col = 1; col <= size; col++)
+                        // na policku kde pribyl kamen
+                        if (!boardAfter.getField(row,col).isEmpty() && boardBefore.getField(row,col).isEmpty())
+                                // barva pridaneho kamene predchozi tah tahla
+                                lastPlayed = boardAfter.getField(row,col).getDisk().isWhite();
+
+        // zmeni hrace na toho, kdo polozil predchozi tah kamen
+        if (currentPlayer().isWhite() != lastPlayed)
+                nextPlayer();
+
+        // hrac, ktery je nyni na tahu dostane zpet kamen
+        currentPlayer().backDisk();
         return true;
     }
     
@@ -308,7 +320,7 @@ public class Game {
     public boolean redo() {
         if (redoable()) {
             // provede redo hrace a pripadne vsechny redo pocitace, dokud je pocitac na tahu
-            while (redo() && currentPlayer().getControl().isAI()) {}
+            while (redo1() && currentPlayer().getControl().isAI()) {}
 
             // pokud je AI stale na tahu, provadi tahy
             while (playAI()) {}
