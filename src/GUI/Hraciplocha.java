@@ -311,79 +311,7 @@ public class Hraciplocha {
         panel.setLayout(lay);
         okno.add(panel);
 
-        
-        // mozne tahy
-        java.util.List<Field> mozneTahy = hra.possiblePlays();
-        Field policko;
-        int velikost = mozneTahy.size();
-        tahy posiblePlay[] = new tahy[velikost+1];
-        for(int i = 0; i < velikost; i++)
-        {
-            policko = mozneTahy.get(i);
-            posiblePlay[i] = new tahy(policko.getRow(),policko.getCol());
-            
-        }
-        int k = 0;
-        
-        for(int i = 1; i < pocetRadku+1; i++)
-        {
-            for(int j = 1; j < pocetRadku+1; j++)
-            {
-                pole = deska.getField(i, j);
-                polickaGui[i][j] = new JPanel();
-                polickaGui[i][j].addMouseListener(new FieldListener(i, j));
-                if(pole.getDisk() == null)
-                {
-                    if((k != velikost) && ((posiblePlay[k].row == i) && (posiblePlay[k].col == j)))
-                    {
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.moznePole));
-                        polickaGui[i][j].add(picLabel);
-                        panel.add(polickaGui[i][j]);
-                        k++;
-                        System.out.println("k: " + k);
-                    }
-                    else
-                    {
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.volnePole));
-                        polickaGui[i][j].add(picLabel);
-                        panel.add(polickaGui[i][j]);
-                    }
-                }
-                else if(pole.getDisk().isWhite() == true)
-                {
-                    if(pole.getDisk().isFrozen() == true)
-                    {
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
-                        polickaGui[i][j].add(picLabel);
-                        panel.add(polickaGui[i][j]);
-                    }
-                    else
-                    {
-                        
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.bilyKamen));
-                        polickaGui[i][j].add(picLabel);
-                        panel.add(polickaGui[i][j]);
-                    }
-                }
-                else
-                {
-                    if(pole.getDisk().isFrozen() == true)
-                    {
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
-                        polickaGui[i][j].add(picLabel);
-                        panel.add(polickaGui[i][j]);
-                    }
-                    else
-                    {
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.cernyKamen));
-                        polickaGui[i][j].add(picLabel);
-                        panel.add(polickaGui[i][j]);
-                    }
-                }
-                
-            }
-        }
-        okno.getContentPane().add(panel);
+        updateBoard();
     }
     
     /**
@@ -433,7 +361,7 @@ public class Hraciplocha {
                 {
                     if(pole.getDisk().isFrozen() == true)
                     {
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyBilyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                     }
@@ -449,7 +377,7 @@ public class Hraciplocha {
                 {
                     if(pole.getDisk().isFrozen() == true)
                     {
-                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyKamen));
+                        picLabel = new JLabel(new ImageIcon(Nacitaniobrazku.zamrzlyCernyKamen));
                         polickaGui[i][j].add(picLabel);
                         panel.add(polickaGui[i][j]);
                     }
@@ -487,13 +415,19 @@ public class Hraciplocha {
             vitezP.setBackground(Color.red);
             vitezP.setBounds(0, 0, 1200, 850);
             vitezP.setLayout(null);
+            int rozdil = 0;
+            if((hra.score(true) + hra.score(false)) != (pocetRadku*pocetRadku))
+            {
+                rozdil = (pocetRadku*pocetRadku) - (hra.score(true) + hra.score(false));
+            }
             if(hra.score(true) > hra.score(false))
             {
-                vitez = new JLabel("Vítězem je hráč White se skóre " + Integer.toString(hra.score(true)));
+                
+                vitez = new JLabel("Vítězem je hráč White se skóre " + Integer.toString(hra.score(true) + rozdil) + ":" + Integer.toString(hra.score(false)));
             }
             else if(hra.score(true) < hra.score(false))
             {
-                vitez = new JLabel("Vítězem je hráč Black se skóre " + Integer.toString(hra.score(false)));
+                vitez = new JLabel("Vítězem je hráč Black se skóre " + Integer.toString(hra.score(false) + rozdil) + ":" + Integer.toString(hra.score(true)));
             }
             else
             {

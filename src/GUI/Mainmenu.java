@@ -57,7 +57,8 @@ public class Mainmenu extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
-                if (fileChooser.showOpenDialog(Mainmenu.this) == JFileChooser.APPROVE_OPTION) {
+                if (fileChooser.showOpenDialog(Mainmenu.this) == JFileChooser.APPROVE_OPTION)
+                {
                     File soubor = fileChooser.getSelectedFile();
                     System.out.print(soubor);
                     Load nacist;

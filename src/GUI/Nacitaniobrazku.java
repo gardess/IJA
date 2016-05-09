@@ -32,9 +32,14 @@ public class Nacitaniobrazku {
     public static BufferedImage cernyKamen;
 
     /**
-     * Obrázek zamrzlého kamene
+     * Obrázek zamrzlého bílého kamene
      */
-    public static BufferedImage zamrzlyKamen;
+    public static BufferedImage zamrzlyBilyKamen;
+    
+    /**
+     * Obrázek zamrzlého černého kamene
+     */
+    public static BufferedImage zamrzlyCernyKamen;
     
     /**
      * Metoda pro načtání obrázků
@@ -46,7 +51,8 @@ public class Nacitaniobrazku {
         Nacitaniobrazku.moznePole = ImageIO.read(new File("lib/img/moznePole.png"));
         Nacitaniobrazku.bilyKamen = ImageIO.read(new File("lib/img/bilyKamen.png"));
         Nacitaniobrazku.cernyKamen = ImageIO.read(new File("lib/img/cernyKamen.png"));
-        Nacitaniobrazku.zamrzlyKamen = ImageIO.read(new File("lib/img/zamrznutyKamen.png"));
+        Nacitaniobrazku.zamrzlyBilyKamen = ImageIO.read(new File("lib/img/bilyZamrznutyKamen.png"));
+        Nacitaniobrazku.zamrzlyCernyKamen = ImageIO.read(new File("lib/img/cernyZamrznutyKamen.png"));
     }
     
 }

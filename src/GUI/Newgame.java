@@ -103,27 +103,19 @@ public class Newgame extends JFrame{
 // velikost hraci desky        
         v6 = new JRadioButton("6");
         v6.setFont(new java.awt.Font("Century", 1, 18));
-        //v6.setText("6");
         v6.setBounds(510, 150, 60, 40);
-        //v6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
         
         v8 = new JRadioButton("8");
         v8.setFont(new java.awt.Font("Century", 1, 18));
-        //v8.setText("8");
         v8.setBounds(580, 150, 60, 40);
-        //v8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
         
         v10 = new JRadioButton("10");
         v10.setFont(new java.awt.Font("Century", 1, 18));
-        //v10.setText("10");
         v10.setBounds(650, 150, 60, 40);
-        //v10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
         
         v12 = new JRadioButton("12");
         v12.setFont(new java.awt.Font("Century", 1, 18));
-        //v12.setText("12");
         v12.setBounds(720, 150, 60, 40);
-        //v12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
         
         bG = new ButtonGroup();
         bG.add(v6);
@@ -135,19 +127,14 @@ public class Newgame extends JFrame{
         okno.getContentPane().add(v8);
         okno.getContentPane().add(v10);
         okno.getContentPane().add(v12);
-        //this.setVisible(true);
-        //okno.getContentPane().add(bG);
         
-// zamrzani kamenu
+        // zamrzani kamenu
         ne = new JRadioButton("NE");
         ne.setFont(new java.awt.Font("Century", 1, 18));
-        //v6.setText("6");
         ne.setBounds(510, 250, 60, 40);
-        //v6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
         
         ano = new JRadioButton("ANO");
         ano.setFont(new java.awt.Font("Century", 1, 18));
-        //v8.setText("8");
         ano.setBounds(580, 250, 80, 40);
         
         zamrzBG = new ButtonGroup();
@@ -188,21 +175,17 @@ public class Newgame extends JFrame{
         okno.getContentPane().add(C);
         
         
-// protihrac
+        // protihrac
         clovek = new JRadioButton("Člověk");
         clovek.setFont(new java.awt.Font("Century", 1, 18));
-        //v6.setText("6");
         clovek.setBounds(510, 350, 90, 40);
-        //v6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
         
         ui1 = new JRadioButton("AI1");
         ui1.setFont(new java.awt.Font("Century", 1, 18));
-        //v8.setText("8");
         ui1.setBounds(620, 350, 70, 40);
         
         ui2 = new JRadioButton("AI2");
         ui2.setFont(new java.awt.Font("Century", 1, 18));
-        //v8.setText("8");
         ui2.setBounds(690, 350, 90, 40);
         
         protiBG = new ButtonGroup();
@@ -214,16 +197,13 @@ public class Newgame extends JFrame{
         okno.getContentPane().add(ui1);
         okno.getContentPane().add(ui2);
 
-// vyber barvy
+        // vyber barvy
         cerna = new JRadioButton("Černá");
         cerna.setFont(new java.awt.Font("Century", 1, 18));
-        //v6.setText("6");
         cerna.setBounds(510, 450, 90, 40);
-        //v6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 3, true));
         
         bila = new JRadioButton("Bílá");
         bila.setFont(new java.awt.Font("Century", 1, 18));
-        //v8.setText("8");
         bila.setBounds(620, 450, 70, 40);
         
         barvaBG = new ButtonGroup();
@@ -233,14 +213,7 @@ public class Newgame extends JFrame{
         okno.getContentPane().add(cerna);
         okno.getContentPane().add(bila);
         
-        /*velikost = new JSlider();
-        velikost.setBounds(480, 150, 300, 30);
-        velikost.setMaximum(12);
-        velikost.setMinimum(6);
-        velikost.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));*/
-        
-        //okno.getContentPane().add(velikost);
-        
+        // strat hry
         start = new JButton("Start");
         start.setBounds(835, 530, 260, 90);
         start.addActionListener((ActionEvent e) -> {
@@ -249,12 +222,11 @@ public class Newgame extends JFrame{
             zamrzaniKamenu();
             protihracVolba();
             barvaVolba();
-            System.out.println("protihrac: " + protihrac);
-            System.out.println("barva: " + barvaV);
             new Hraciplocha(velikostDesky, protihrac, barvaV, zamrzaniKamenuI, II, BI, CI);
         });
         okno.getContentPane().add(start);
-        
+
+        // zpet do hlavniho menu
         zpet = new JButton("Zpět");
         zpet.setBounds(105, 530, 260, 90);
         zpet.addActionListener((ActionEvent e) -> {
@@ -263,6 +235,7 @@ public class Newgame extends JFrame{
         });
         okno.getContentPane().add(zpet);
         
+        // konec hry
         konec = new JButton("Konec");
         konec.setBounds(470, 530, 260, 90);
         konec.addActionListener((ActionEvent e) -> {
