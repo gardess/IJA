@@ -210,8 +210,7 @@ public class Game {
      */
     public boolean play(int row, int col) {
         if (play1(row, col)) {
-            while (this.currentPlayer().getControl().isAI())
-                playAI();
+            while (playAI()) {}
             return true;
         }
         return false;
